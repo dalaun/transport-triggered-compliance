@@ -169,7 +169,7 @@ This document is immutable at v1.0. Revisions are released as new versions.
 How to cite:
 Finch, D. (2026). Transport-Triggered Compliance (TTC): A General Framework
 for Regulating High-Risk Flows (Version 1.0).
-Source: DOI: 10.5281/zenodo.18728152  
+Source: DOI: 10.5281/zenodo.18732820  
 github.com/dalaun/transport-triggered-compliance
 
 ---
