@@ -1,0 +1,39 @@
+{
+  "stress_test_version": "1.0",
+  "ttc_version": "1.0",
+  "ftj_version": "1.0",
+  "status": "ALL GAPS CLOSED",
+  "gap_closure": [
+    {
+      "gap": "custody undefined",
+      "status": "CLOSED",
+      "closed_by": "CLOSED by FTJ v1.0 Section II \u2014 custody defined as physical exercise of control during movement regardless of legal title"
+    },
+    {
+      "gap": "constructive vs physical custody",
+      "status": "CLOSED",
+      "closed_by": "CLOSED by FTJ v1.0 Section II \u2014 constructive custody held by absent parties does not displace attachment"
+    },
+    {
+      "gap": "movement intent requirement",
+      "status": "CLOSED",
+      "closed_by": "CLOSED by FTJ v1.0 Section II \u2014 intent at time of movement is not required, physical displacement is sufficient"
+    },
+    {
+      "gap": "third-party requirement implicit but unresolved",
+      "status": "CLOSED",
+      "closed_by": "CLOSED by FTJ v1.0 Section III \u2014 internal transfers between affiliates are not exempt"
+    },
+    {
+      "gap": "technology neutrality unproven for digital flows",
+      "status": "CLOSED",
+      "closed_by": "CLOSED by FTJ v1.0 Section IV \u2014 digital flows explicitly scoped via programmatic custody definition"
+    }
+  ],
+  "canon_status": {
+    "FTJ": "FROZEN v1.0",
+    "TTC": "FROZEN v1.0",
+    "ACT": "FROZEN v1.0"
+  },
+  "verdict": "Stack complete. FTJ v1.0 + TTC v1.0 + ACT v1.0 all frozen. Ready for simultaneous publication with DOI."
+}
