@@ -42,16 +42,19 @@ collapsing the system.
 ### FTJ v1.0
 Finch, D. (2026). *Flow-Triggered Jurisdiction (FTJ): A First-Principles
 Framework for Regulatory Jurisdiction Over Regulated Flows* (Version 1.0).
+DOI: 10.5281/zenodo.18728152
 github.com/dalaun/transport-triggered-compliance
 
 ### TTC v1.0
 Finch, D. (2026). *Transport-Triggered Compliance (TTC): A General Framework
 for Regulating High-Risk Flows* (Version 1.0).
+DOI: 10.5281/zenodo.18728152
 github.com/dalaun/transport-triggered-compliance
 
 ### ACT v1.0
 Finch, D. (2026). *Anti-Circumvention Triad (ACT): Statutory Harmonization
 of CRTA Sections 15-70(p)(5), 15-70(p)(6), and 15-70(r)* (Version 1.0).
+DOI: 10.5281/zenodo.18728152
 github.com/dalaun/transport-triggered-compliance
 
 ---
