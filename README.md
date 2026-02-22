@@ -16,6 +16,14 @@ before freezing. Designed to be cited, forked, and applied — not argued over.
 
 ## The Canon Stack
 
+### Theoretical Foundation
+| Document | Question Answered |
+|---|---|
+| EIAAN v1.0 — Epistemic Infrastructure for Autonomous Agent Networks | Why does epistemic infrastructure exist at all? |
+| CMP v1.0 — Canonical Mediation Protocol | How does the mediation protocol operate? (pending) |
+
+### Applied Canon
+
 | Layer | Document | Question Answered |
 |---|---|---|
 | Constitutional | FTJ v1.0 — Flow-Triggered Jurisdiction | When does the state have jurisdiction at all? |
@@ -38,6 +46,11 @@ collapsing the system.
 ---
 
 ## How to Cite
+
+### EIAAN v1.0
+Finch, D. (2026). *Epistemic Infrastructure for Autonomous Agent Networks (EIAAN):
+A First-Principles Framework for Trust in Multi-Agent Systems* (Version 1.0).
+github.com/dalaun/transport-triggered-compliance
 
 ### FTJ v1.0
 Finch, D. (2026). *Flow-Triggered Jurisdiction (FTJ): A First-Principles
