@@ -2,7 +2,7 @@
 A First-Principles Definition
 Author: Dalaun Finch
 Status: FROZEN
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 Date: 2026-02-23
 
 ## The Legal Precedent
@@ -80,5 +80,5 @@ This is the long-term infrastructure EIAAN v1.0 describes.
 ## Citation
 
 Finch, D. (2026). Stare Decisis for Agents v1.0: A First-Principles Definition.
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance

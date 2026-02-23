@@ -32,7 +32,7 @@ POST /mediate requires $0.05 USDC on Base mainnet (Chain ID: 8453).
 
 ## Canon Protocol
 
-Implements CMP v1.0 -- DOI: https://doi.org/10.5281/zenodo.18746444
+Implements CMP v1.0 -- DOI: https://doi.org/10.5281/zenodo.18748449
 
 ## Operator
 

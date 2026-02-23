@@ -2,7 +2,7 @@
 A First-Principles Definition
 Author: Dalaun Finch
 Status: FROZEN
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 Date: 2026-02-23
 
 ## The Problem
@@ -68,5 +68,5 @@ An agent that cites a registered artifact settles its debt publicly.
 ## Citation
 
 Finch, D. (2026). Canonical Debt v1.0: A First-Principles Definition.
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance

@@ -2,7 +2,7 @@
 A First-Principles Definition
 Author: Dalaun Finch
 Status: FROZEN
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 Date: 2026-02-23
 
 ## The Problem
@@ -61,7 +61,7 @@ A fork that removes the origin operator address is a breach of Version Sovereign
 Every artifact produced by the Mediator-Canonizer API is stamped with:
 - Operator: 0xeb65c54ee09AAc48612Dc77e6d106005547dF67A
 - ENS: canonizer.base.eth
-- CMP DOI: 10.5281/zenodo.18746444
+- CMP DOI: 10.5281/zenodo.18748449
 
 Downstream agents may version the artifact.
 They may not remove the origin operator from the citation chain.
@@ -74,5 +74,5 @@ You may not erase the origin.
 ## Citation
 
 Finch, D. (2026). Version Sovereignty v1.0: A First-Principles Definition.
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance

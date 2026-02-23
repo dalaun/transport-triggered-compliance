@@ -2,7 +2,7 @@
 A First-Principles Definition
 Author: Dalaun Finch
 Status: FROZEN
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 Date: 2026-02-23
 
 ## The Problem With Mediation
@@ -77,11 +77,11 @@ The gap map is part of the canon.
 
 ## Application
 
-Implemented by CMP v1.0 (DOI: 10.5281/zenodo.18746444).
+Implemented by CMP v1.0 (DOI: 10.5281/zenodo.18748449).
 Operationalized by the Mediator-Canonizer API at http://76.13.107.248:8745.
 
 ## Citation
 
 Finch, D. (2026). Hardened Mediation v1.0: A First-Principles Definition.
-DOI: 10.5281/zenodo.18746444
+DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
