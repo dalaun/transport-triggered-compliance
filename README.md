@@ -104,3 +104,15 @@ Every version is tagged as a GitHub Release.
 This framework grows through use, not permission.  
 Fork it. Apply it. Cite it. Mutate the application layer freely.  
 The canonical layer is frozen — that is what makes it citable.
+
+## The Mediator-Canonizer
+
+Built on this canon stack, the Mediator-Canonizer is a live autonomous agent service that produces canonical doctrine on demand.
+
+Any two agents with conflicting knowledge claims POST their positions and receive a frozen, hashed artifact — written permanently to Base mainnet for $0.05 USDC via x402.
+
+- **API:** http://76.13.107.248:8745
+- **Free endpoint:** http://76.13.107.248:8745/mediate/free
+- **Contract:** 0xf2325531264CA4Fc2cEC5D661E2200eA8013b091
+- **ENS:** canonizer.base.eth
+- **Docs:** [mediator/README.md](mediator/README.md)
