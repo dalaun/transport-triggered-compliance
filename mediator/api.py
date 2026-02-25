@@ -66,7 +66,12 @@ def index():
         "endpoints": {
             "POST /mediate": "Submit positions for canonization (requires x402 payment)",
             "POST /mediate/free": "Free mediation (no on-chain registration)",
-            "GET /health": "Service health check"
+            "GET /health": "Service health check",
+            "GET /recall": "Pre-flight citation check: surfaces prior frozen canons",
+            "POST /a2a/dispute": "Open A2A dispute session",
+            "POST /a2a/respond/{id}": "Peer agent responds; triggers mediation",
+            "GET /a2a/dispute/{id}": "Dispute status",
+            "GET /a2a/disputes": "List open disputes"
         },
         "payload_schema": {
             "domain": "string: the domain being mediated",
@@ -88,6 +93,183 @@ def index():
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok", "service": "mediator-canonizer", "contract": CONTRACT})
+
+
+
+import uuid, time
+
+# ─── A2A dispute store (in-memory) ───────────────────────────────────────────
+_disputes = {}   # dispute_id -> {created, domain, declarations, positions, status}
+A2A_TTL = 3600   # disputes expire after 1 hour
+
+def _prune_disputes():
+    now = time.time()
+    expired = [k for k, v in _disputes.items() if now - v["created"] > A2A_TTL]
+    for k in expired:
+        del _disputes[k]
+
+# ─── A2A endpoints ────────────────────────────────────────────────────────────
+
+@app.route("/a2a/dispute", methods=["POST"])
+def a2a_initiate():
+    """
+    Initiating agent opens a dispute session.
+
+    Request body:
+    {
+      "agent_id": "string",          # caller identity
+      "domain": "string",            # domain to mediate
+      "claims": ["..."],             # initiating agent position
+      "scope_boundary": "string",    # optional — helps downstream freeze
+      "fiduciary_moment": "string",
+      "evidence_standard": "string",
+      "metadata": {}
+    }
+
+    Returns:
+    {
+      "dispute_id": "uuid",
+      "status": "open",
+      "awaiting": "peer_response",
+      "respond_url": "/a2a/respond/{dispute_id}"
+    }
+    """
+    _prune_disputes()
+    data = request.get_json() or {}
+    agent_id = data.get("agent_id", "agent-unknown")
+    domain = data.get("domain", "")
+    claims = data.get("claims", [])
+
+    if not domain or not claims:
+        return jsonify({"error": "domain and claims required"}), 400
+
+    dispute_id = str(uuid.uuid4())[:8]
+    _disputes[dispute_id] = {
+        "created": time.time(),
+        "domain": domain,
+        "scope_boundary": data.get("scope_boundary", ""),
+        "fiduciary_moment": data.get("fiduciary_moment", ""),
+        "evidence_standard": data.get("evidence_standard", ""),
+        "metadata": data.get("metadata", {}),
+        "positions": [{"agent": agent_id, "claims": claims}],
+        "status": "open"
+    }
+
+    return jsonify({
+        "schema": "A2A/1.0",
+        "dispute_id": dispute_id,
+        "status": "open",
+        "awaiting": "peer_response",
+        "domain": domain,
+        "respond_url": f"/a2a/respond/{dispute_id}",
+        "expires_in": A2A_TTL,
+        "cmp_doi": "10.5281/zenodo.18732820"
+    }), 201
+
+
+@app.route("/a2a/respond/<dispute_id>", methods=["POST"])
+def a2a_respond(dispute_id):
+    """
+    Peer agent joins an open dispute and triggers mediation.
+
+    Request body:
+    {
+      "agent_id": "string",
+      "claims": ["..."]
+    }
+
+    Returns: full mediation result (same as /mediate/free) once processed.
+    """
+    if dispute_id not in _disputes:
+        return jsonify({"error": "dispute not found or expired"}), 404
+
+    dispute = _disputes[dispute_id]
+    if dispute["status"] != "open":
+        return jsonify({"error": "dispute already resolved", "status": dispute["status"]}), 409
+
+    data = request.get_json() or {}
+    agent_id = data.get("agent_id", "peer-agent")
+    claims = data.get("claims", [])
+
+    if not claims:
+        return jsonify({"error": "claims required"}), 400
+
+    # Check not same agent responding to own dispute
+    if any(p["agent"] == agent_id for p in dispute["positions"]):
+        return jsonify({"error": "same agent cannot be both parties"}), 409
+
+    dispute["positions"].append({"agent": agent_id, "claims": claims})
+    dispute["status"] = "mediating"
+
+    # Build mediation payload and run CMP
+    input_data = {
+        "domain": dispute["domain"],
+        "type": "A",
+        "positions": dispute["positions"],
+        "scope_boundary": dispute.get("scope_boundary", ""),
+        "fiduciary_moment": dispute.get("fiduciary_moment", ""),
+        "evidence_standard": dispute.get("evidence_standard", ""),
+        "metadata": {**dispute.get("metadata", {}), "a2a_dispute_id": dispute_id}
+    }
+
+    try:
+        result = mediate(input_data)
+        dispute["status"] = "resolved"
+        dispute["result"] = result["citation"]
+        _disputes[dispute_id] = dispute
+
+        result["a2a"] = {
+            "schema": "A2A/1.0",
+            "dispute_id": dispute_id,
+            "parties": [p["agent"] for p in dispute["positions"]],
+            "status": "resolved"
+        }
+        return jsonify(result), 200
+
+    except Exception as e:
+        dispute["status"] = "error"
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/a2a/dispute/<dispute_id>", methods=["GET"])
+def a2a_status(dispute_id):
+    """Check status of an open or resolved dispute."""
+    if dispute_id not in _disputes:
+        return jsonify({"error": "not found"}), 404
+
+    dispute = _disputes[dispute_id]
+    resp = {
+        "schema": "A2A/1.0",
+        "dispute_id": dispute_id,
+        "domain": dispute["domain"],
+        "status": dispute["status"],
+        "parties": [p["agent"] for p in dispute["positions"]],
+        "created": dispute["created"],
+        "expires_in": max(0, A2A_TTL - (time.time() - dispute["created"]))
+    }
+    if "result" in dispute:
+        resp["result"] = dispute["result"]
+    return jsonify(resp), 200
+
+
+@app.route("/a2a/disputes", methods=["GET"])
+def a2a_list():
+    """List open disputes (for peer agents to discover and respond)."""
+    _prune_disputes()
+    open_disputes = [
+        {
+            "dispute_id": did,
+            "domain": d["domain"],
+            "status": d["status"],
+            "parties": len(d["positions"]),
+            "awaiting": "peer" if d["status"] == "open" else None,
+            "respond_url": f"/a2a/respond/{did}",
+            "expires_in": max(0, A2A_TTL - (time.time() - d["created"]))
+        }
+        for did, d in _disputes.items()
+        if d["status"] == "open"
+    ]
+    return jsonify({"schema": "A2A/1.0", "open_disputes": open_disputes}), 200
 
 
 @app.route("/recall", methods=["GET", "POST"])
