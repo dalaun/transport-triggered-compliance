@@ -6,6 +6,8 @@ Implements: EpistemicCustody, CanonicalDebt, PropagationLiability (all v1.0)
 
 Prevents agents from reworking ground already covered by a frozen canon.
 Called automatically in mediate() and exposed as GET /recall endpoint.
+
+DOI: 10.5281/zenodo.18765787
 """
 
 import os, re, json

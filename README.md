@@ -2,7 +2,7 @@
 
 **Author:** Dalaun Finch
 **License:** CC BY 4.0 — cite, fork, apply with attribution
-**DOI:** 10.5281/zenodo.18748449
+**DOI:** 10.5281/zenodo.18765787
 **API:** `http://76.13.107.248:8745`
 **Contract:** `0xf2325531264CA4Fc2cEC5D661E2200eA8013b091` (Base mainnet)
 
