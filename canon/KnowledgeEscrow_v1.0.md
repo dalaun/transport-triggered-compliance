@@ -95,3 +95,13 @@ allowing agents to query whether a claim is currently under active mediation.
 Finch, D. (2026). The Knowledge Escrow v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the pre-canon suspension of disputed knowledge claims during active mediation. Does not govern knowledge deletion, permanent suppression, legal evidence rules, or claims outside active mediation.
+
+**Fiduciary Moment:** The moment a disputed claim is submitted for mediation and suspended from operational use pending canonical resolution.
+
+**Evidence Standard:** Active mediation session ID with submitted claim hash constitutes sufficient escrow status evidence. A claim without session ID is not escrowed.

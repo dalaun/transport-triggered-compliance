@@ -167,4 +167,14 @@ Framework for Regulatory Jurisdiction Over Regulated Flows (Version 1.0).
 Source: github.com/dalaun/Clawd
 
 ---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the moment at which regulatory jurisdiction attaches over regulated flows. Does not govern compliance obligations, enforcement mechanisms, penalty structures, or market access rules.
+
+**Fiduciary Moment:** The moment physical custody is exercised over regulated material during movement — the earliest observable moment at which the state can verify and enforce any obligation.
+
+**Evidence Standard:** Observable physical displacement with documented chain-of-custody. Manifests, timestamps, and location data constitute sufficient evidence. Intent at time of movement is not required.
+
+---
 FTJ v1.0 | Finch, D. | 2026 | This document is immutable; revisions are released as new versions.

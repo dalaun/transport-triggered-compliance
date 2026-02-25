@@ -173,4 +173,14 @@ Source: DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
 
 ---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs compliance obligations that attach at the moment of transport initiation for regulated materials. Does not govern pre-transport classification, post-delivery obligations, market access, or penalty structures.
+
+**Fiduciary Moment:** The moment a transport event is initiated, recorded, and the regulated material enters a flow — triggering compliance obligations on the transporting party.
+
+**Evidence Standard:** Transport manifest with operator identity, timestamp, and material classification constitutes sufficient compliance trigger evidence.
+
+---
 TTC v1.0 | Finch, D. | 2026 | This document is immutable; revisions are released as new versions.

@@ -70,3 +70,13 @@ An agent that cites a registered artifact settles its debt publicly.
 Finch, D. (2026). Canonical Debt v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the epistemic obligation incurred when a frozen canon is used without citation in a derived artifact. Does not govern copyright, legal plagiarism, or contractual attribution.
+
+**Fiduciary Moment:** The moment a derived artifact is frozen that incorporates canonical invariants without citing the source canon.
+
+**Evidence Standard:** A frozen artifact whose invariants trace to a prior canon, with no citation of that canon in the artifact, constitutes canonical debt. Derivation chain is determinable from hash comparison.

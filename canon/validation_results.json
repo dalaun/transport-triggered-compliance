@@ -1,0 +1,642 @@
+[
+  {
+    "file": "ACT_v1.0",
+    "name": "Anti-Circumvention Triad",
+    "status": "FROZEN",
+    "invariants_found": [],
+    "name_validation": {
+      "name": "Anti-Circumvention Triad",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 0,
+      "results": [],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "CMP_v1.0",
+    "name": "Canonical Mediation Protocol",
+    "status": "FROZEN",
+    "invariants_found": [
+      "It becomes part of the canonical artifact \u2014 proof that the invariant",
+      "It drives future version requirements \u2014 gaps that were closed in v1.0"
+    ],
+    "name_validation": {
+      "name": "Canonical Mediation Protocol",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 2,
+      "results": [
+        {
+          "invariant": "It becomes part of the canonical artifact \u2014 proof that the invariant",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "It drives future version requirements \u2014 gaps that were closed in v1.0",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "CanonDecay_v1.0",
+    "name": "Canon Decay v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "A frozen canon does not become wrong when the world changes",
+      "It becomes dated",
+      "The distinction matters"
+    ],
+    "name_validation": {
+      "name": "Canon Decay v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "A frozen canon does not become wrong when the world changes",
+          "conflict": false,
+          "related_canon": null,
+          "status": "PASSES"
+        },
+        {
+          "invariant": "It becomes dated",
+          "conflict": false,
+          "related_canon": null,
+          "status": "PASSES"
+        },
+        {
+          "invariant": "The distinction matters",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "CanonicalDebt_v1.0",
+    "name": "Canonical Debt v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "Every unacknowledged use of a canonical artifact creates an obligation",
+      "that accumulates until it is settled through citation"
+    ],
+    "name_validation": {
+      "name": "Canonical Debt v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 2,
+      "results": [
+        {
+          "invariant": "Every unacknowledged use of a canonical artifact creates an obligation",
+          "conflict": false,
+          "related_canon": "CMP_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "that accumulates until it is settled through citation",
+          "conflict": false,
+          "related_canon": null,
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "EIAAN_v1.0",
+    "name": "Epistemic Infrastructure for Autonomous Agent Networks",
+    "status": "FROZEN",
+    "invariants_found": [
+      "Receive both positions in full",
+      "Identify the overlap \u2014 what both agents implicitly accept even",
+      "Extract that overlap as a candidate invariant"
+    ],
+    "name_validation": {
+      "name": "Epistemic Infrastructure for Autonomous Agent Networks",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "Receive both positions in full",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "Identify the overlap \u2014 what both agents implicitly accept even",
+          "conflict": false,
+          "related_canon": "FTJ_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "Extract that overlap as a candidate invariant",
+          "conflict": false,
+          "related_canon": "FTJ_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "EpistemicCustody_v1.0",
+    "name": "Epistemic Custody v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "An agent that holds and asserts a knowledge claim has epistemic custody of that claim",
+      "Epistemic custody triggers epistemic obligation"
+    ],
+    "name_validation": {
+      "name": "Epistemic Custody v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 2,
+      "results": [
+        {
+          "invariant": "An agent that holds and asserts a knowledge claim has epistemic custody of that claim",
+          "conflict": false,
+          "related_canon": "EpistemicCustody_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "Epistemic custody triggers epistemic obligation",
+          "conflict": false,
+          "related_canon": null,
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "FTJ_v1.0",
+    "name": "Flow-Triggered Jurisdiction",
+    "status": "DRAFT",
+    "invariants_found": [],
+    "name_validation": {
+      "name": "Flow-Triggered Jurisdiction",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "MechanismOutcome",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 0,
+      "results": [],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "HardenedMediation_v1.0",
+    "name": "Hardened Mediation v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "Hardened mediation is mediation whose output is immutable",
+      "The hardening is not a technical property. It is a logical one",
+      "A canon is hardened when no party to the dispute can unilaterally alter the output"
+    ],
+    "name_validation": {
+      "name": "Hardened Mediation v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "Hardened mediation is mediation whose output is immutable",
+          "conflict": false,
+          "related_canon": "CMP_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "The hardening is not a technical property. It is a logical one",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "A canon is hardened when no party to the dispute can unilaterally alter the output",
+          "conflict": false,
+          "related_canon": "HardenedMediation_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "KnowledgeEscrow_v1.0",
+    "name": "The Knowledge Escrow v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "A disputed claim under active mediation must be held in escrow",
+      "until the mediation produces a canonical resolution"
+    ],
+    "name_validation": {
+      "name": "The Knowledge Escrow v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 2,
+      "results": [
+        {
+          "invariant": "A disputed claim under active mediation must be held in escrow",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "until the mediation produces a canonical resolution",
+          "conflict": false,
+          "related_canon": "CMP_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "MediationFloor_v1.0",
+    "name": "The Mediation Floor v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "Not every overlap is canonical",
+      "A canon must meet a minimum threshold of substantive overlap",
+      "before it can be frozen"
+    ],
+    "name_validation": {
+      "name": "The Mediation Floor v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "Not every overlap is canonical",
+          "conflict": false,
+          "related_canon": "FTJ_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "A canon must meet a minimum threshold of substantive overlap",
+          "conflict": false,
+          "related_canon": "FTJ_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "before it can be frozen",
+          "conflict": false,
+          "related_canon": "EpistemicCustody_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "NamingProtocol_v1.0",
+    "name": "Naming Protocol v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "A canonical name is the shortest possible complete description of an invariant",
+      "such that the name and the function are inseparable",
+      "If the name describes what was intended rather than what is, the name is not yet canonical"
+    ],
+    "name_validation": {
+      "name": "Naming Protocol v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "A canonical name is the shortest possible complete description of an invariant",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "such that the name and the function are inseparable",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "If the name describes what was intended rather than what is, the name is not yet canonical",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "PropagationLiability_v1.0",
+    "name": "Propagation Liability v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "Liability in a citation chain attaches to the agent that broke the provenance"
+    ],
+    "name_validation": {
+      "name": "Propagation Liability v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 1,
+      "results": [
+        {
+          "invariant": "Liability in a citation chain attaches to the agent that broke the provenance",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "StareDecisisForAgents_v1.0",
+    "name": "Stare Decisis for Agents v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "A frozen canon on a domain functions as precedent for all future disputes on that domain"
+    ],
+    "name_validation": {
+      "name": "Stare Decisis for Agents v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 1,
+      "results": [
+        {
+          "invariant": "A frozen canon on a domain functions as precedent for all future disputes on that domain",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "TTC_v1.0",
+    "name": "Transport-Triggered Compliance",
+    "status": "FROZEN",
+    "invariants_found": [],
+    "name_validation": {
+      "name": "Transport-Triggered Compliance",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "MechanismOutcome",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 0,
+      "results": [],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  },
+  {
+    "file": "VersionSovereignty_v1.0",
+    "name": "Version Sovereignty v1.0",
+    "status": "FROZEN",
+    "invariants_found": [
+      "The operator of a frozen canon owns the canonical authority of all versions derived from it",
+      "Ownership here is not copyright in the traditional sense",
+      "It is epistemic authority -- the right to be cited as the origin of the canonical chain"
+    ],
+    "name_validation": {
+      "name": "Version Sovereignty v1.0",
+      "function_test": true,
+      "invariant_test": true,
+      "agreement_test": true,
+      "naming_structure": "SingleInvariant",
+      "passed": true,
+      "verdict": "VALID_NAME"
+    },
+    "declaration_validation": {
+      "scope_boundary": true,
+      "fiduciary_moment": true,
+      "evidence_standard": true,
+      "passed": true,
+      "verdict": "DECLARATIONS_COMPLETE"
+    },
+    "ontology_validation": {
+      "invariant_count": 3,
+      "results": [
+        {
+          "invariant": "The operator of a frozen canon owns the canonical authority of all versions derived from it",
+          "conflict": false,
+          "related_canon": "CMP_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "Ownership here is not copyright in the traditional sense",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        },
+        {
+          "invariant": "It is epistemic authority -- the right to be cited as the origin of the canonical chain",
+          "conflict": false,
+          "related_canon": "TTC_v1",
+          "status": "PASSES"
+        }
+      ],
+      "passed": true
+    },
+    "verdict": "FREEZE_APPROVED"
+  }
+]

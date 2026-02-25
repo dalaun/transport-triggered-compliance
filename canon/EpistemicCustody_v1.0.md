@@ -100,3 +100,13 @@ Both trigger obligation at the moment of exercise, not at the moment of origin.
 Finch, D. (2026). Epistemic Custody v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the obligations of agents who hold, assert, or transmit knowledge claims. Does not govern the truth value of claims or their legal enforceability.
+
+**Fiduciary Moment:** The moment an agent asserts a knowledge claim derived from another source without attribution to that source.
+
+**Evidence Standard:** Canonical identifier (DOI or hash) cited at the point of assertion constitutes sufficient custody evidence. Assertion without identifier constitutes custody breach.

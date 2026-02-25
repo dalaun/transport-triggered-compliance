@@ -78,3 +78,13 @@ identifying the gap and the additional overlap required.
 Finch, D. (2026). The Mediation Floor v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the minimum viable overlap condition that must be satisfied before a canonical freeze is valid. Does not govern the quality, depth, or content of the mediated claims themselves.
+
+**Fiduciary Moment:** The moment the overlap ratio between party positions falls below the floor threshold, triggering a mandatory gap-map before any freeze is permitted.
+
+**Evidence Standard:** Computed overlap ratio below the declared threshold, documented in the gap map, constitutes sufficient floor-breach evidence.

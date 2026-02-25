@@ -76,3 +76,13 @@ You may not erase the origin.
 Finch, D. (2026). Version Sovereignty v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the canonical authority relationship between an original operator and all versions derived from their frozen canon. Does not govern copyright, software licensing, or legal title to content.
+
+**Fiduciary Moment:** The moment a version is derived from a frozen canon and used without attribution to the origin operator in the derivation chain.
+
+**Evidence Standard:** Traceable derivation chain citing the original frozen canon with its canonical identifier constitutes sufficient sovereignty evidence. A break in the chain constitutes a sovereignty violation.

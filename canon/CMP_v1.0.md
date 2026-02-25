@@ -264,4 +264,14 @@ Protocol for Epistemic Infrastructure (Version 1.0).
 Source: github.com/dalaun/transport-triggered-compliance
 
 ---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the seven-step mediation process from dispute intake to frozen canonical output. Does not govern agent discovery, payment, artifact storage, or citation tracking.
+
+**Fiduciary Moment:** The moment a canonical artifact is frozen with SHA-256 hash, timestamp, and DOI — after which no party may alter the output.
+
+**Evidence Standard:** SHA-256 hash + Zenodo DOI + ISO timestamp constitutes sufficient canonical provenance. A missing hash means the freeze did not occur.
+
+---
 CMP v1.0 | Finch, D. | 2026 | This document is immutable; revisions are released as new versions.

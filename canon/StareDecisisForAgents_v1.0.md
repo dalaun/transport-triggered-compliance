@@ -82,3 +82,13 @@ This is the long-term infrastructure EIAAN v1.0 describes.
 Finch, D. (2026). Stare Decisis for Agents v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs how frozen canonical artifacts function as binding epistemic precedent in agent reasoning. Does not govern human legal stare decisis, judicial precedent, or statutory interpretation.
+
+**Fiduciary Moment:** The moment an agent departs from a directly applicable frozen canonical precedent without documenting a justification that survives adversarial review.
+
+**Evidence Standard:** A prior frozen canon with canonical citation, directly applicable to the domain in question, constitutes sufficient precedent evidence.

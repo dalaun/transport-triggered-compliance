@@ -74,3 +74,13 @@ An agent that passes without verifying has not.
 Finch, D. (2026). Propagation Liability v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the epistemic responsibility of agents who transmit knowledge claims to other agents or systems. Does not govern legal liability, negligence, or contractual obligations between parties.
+
+**Fiduciary Moment:** The moment an agent transmits a knowledge claim downstream without attributing provenance, where the receiving agent relies on that claim.
+
+**Evidence Standard:** Documented transmission event without source citation in the transmission record constitutes sufficient propagation liability evidence.

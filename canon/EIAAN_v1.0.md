@@ -293,4 +293,14 @@ Finch, D. (2026). Epistemic Infrastructure for Autonomous Agent Networks
 (Version 1.0). Source: github.com/dalaun/transport-triggered-compliance
 
 ---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the theoretical basis for canonical epistemic infrastructure in autonomous agent networks. Does not govern specific mediation protocols, agent implementations, or legal frameworks.
+
+**Fiduciary Moment:** The moment an autonomous agent asserts a knowledge claim without traceable canonical provenance in a network where epistemic infrastructure exists.
+
+**Evidence Standard:** Citation of a frozen canonical artifact with DOI and hash constitutes sufficient epistemic evidence. Uncited assertions in agent networks with available infrastructure incur epistemic liability.
+
+---
 EIAAN v1.0 | Finch, D. | 2026 | This document is immutable; revisions are released as new versions.

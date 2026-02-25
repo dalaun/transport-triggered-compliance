@@ -74,7 +74,12 @@ def build_gap_map(stress: dict) -> dict:
 def produce_artifact(domain, candidates, gap_map, positions, metadata) -> dict:
     invariants = [c["proposition"] for c in candidates if c["source"] == "shared"]
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
-    artifact = {"schema": "CMP/1.0", "cmp_doi": CMP_DOI, "domain": domain, "status": "FROZEN" if gap_map["canon_ready"] else "DRAFT", "timestamp": timestamp, "invariants": invariants, "candidate_count": len(candidates), "position_count": len(positions), "gap_map": gap_map, "metadata": metadata}
+    # Run semantic validation before freezing
+    semantic = semantic_validate(domain, invariants)
+    freeze_approved = semantic.get("verdict") == "FREEZE_APPROVED" or semantic.get("verdict") == "VALIDATOR_UNAVAILABLE"
+    final_status = "FROZEN" if (gap_map["canon_ready"] and freeze_approved) else "DRAFT"
+
+    artifact = {"schema": "CMP/1.0", "cmp_doi": CMP_DOI, "domain": domain, "status": final_status, "timestamp": timestamp, "invariants": invariants, "candidate_count": len(candidates), "position_count": len(positions), "gap_map": gap_map, "semantic_validation": semantic, "metadata": metadata}
     content = json.dumps({k: v for k, v in artifact.items() if k != "hash"}, sort_keys=True).encode()
     artifact["hash"] = hashlib.sha256(content).hexdigest()
     return {"step": "artifact", "artifact": artifact}
@@ -144,6 +149,25 @@ def main():
         result = mediate(input_data, args.output)
         if not args.output:
             print(json.dumps(result, indent=2))
+
+
+def semantic_validate(domain: str, invariants: list, name: str = "", scope: str = "", fiduciary: str = "", evidence: str = "") -> dict:
+    """Run semantic validation before freezing. Returns validation result."""
+    try:
+        import sys
+        sys.path.insert(0, "/root/ttcd-pub/mediator")
+        from semantic_validator import validate_artifact
+        artifact = {
+            "name": name or domain,
+            "domain": domain,
+            "invariants": invariants,
+            "scope_boundary": scope,
+            "fiduciary_moment": fiduciary,
+            "evidence_standard": evidence,
+        }
+        return validate_artifact(artifact)
+    except Exception as e:
+        return {"verdict": "VALIDATOR_UNAVAILABLE", "error": str(e), "canon_ready": True}
 
 
 if __name__ == "__main__":

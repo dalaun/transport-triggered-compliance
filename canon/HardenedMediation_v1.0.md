@@ -85,3 +85,13 @@ Operationalized by the Mediator-Canonizer API at http://76.13.107.248:8745.
 Finch, D. (2026). Hardened Mediation v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs mediation processes whose outputs are immutable and derive authority from process rather than party consent. Does not govern soft mediation, arbitration, litigation, or consensus-based resolution.
+
+**Fiduciary Moment:** The moment a mediation output is frozen with hash and timestamp — after which withdrawal of consent by any party does not alter the canon.
+
+**Evidence Standard:** Frozen hash + ISO timestamp + DOI + documented adversarial stress test constitutes sufficient hardening evidence. Settlement without stress test record is not hardened.

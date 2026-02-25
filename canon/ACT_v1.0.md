@@ -227,4 +227,14 @@ of CRTA Sections 15-70(p)(5), 15-70(p)(6), and 15-70(r) (Version 1.0).
 Source: github.com/dalaun/Clawd
 
 ---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the canonical taxonomy of agent compliance behaviors. Does not govern enforcement mechanisms, penalty structures, or specific statutory compliance requirements.
+
+**Fiduciary Moment:** The moment an agent's behavior is classified against the taxonomy and that classification is used to determine compliance status.
+
+**Evidence Standard:** Observable, logged agent behavior that can be mapped to a taxonomy category without interpretation of intent.
+
+---
 ACT v1.0 | Finch, D. | 2026 | This document is immutable; revisions are released as new versions.

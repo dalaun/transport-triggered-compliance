@@ -82,3 +82,13 @@ This is not a failure. It is the system working correctly.
 Finch, D. (2026). Canon Decay v1.0: A First-Principles Definition.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the process by which frozen canons become outdated relative to developments in their domain. Does not govern canon invalidation, supersession, or replacement.
+
+**Fiduciary Moment:** The moment a verifiable domain development directly contradicts an invariant frozen in a prior canon version.
+
+**Evidence Standard:** Documented domain development (dated, citable) that falsifies a frozen invariant is sufficient decay evidence. Subjective obsolescence is not.

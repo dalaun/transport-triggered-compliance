@@ -158,3 +158,13 @@ semantic validation layer in CMP v2.0.
 Finch, D. (2026). Naming Protocol v1.0: A Canonical Standard for Naming Canonical Artifacts.
 DOI: 10.5281/zenodo.18748449
 github.com/dalaun/transport-triggered-compliance
+
+---
+
+## Jurisdictional Declarations
+
+**Scope Boundary:** Governs the canonical standard for naming canonical artifacts across the CMP framework. Does not govern naming in non-canonical contexts, informal usage, or branding decisions.
+
+**Fiduciary Moment:** The moment a name is proposed for a canonical artifact and submitted to the Mediator-Canonizer for validation — before freeze, not after.
+
+**Evidence Standard:** Passing all three naming tests (Function, Invariant, Agreement) as evaluated by SemanticValidator/1.0 constitutes sufficient naming validation evidence.
