@@ -13,6 +13,8 @@ import argparse
 import sys
 from pathlib import Path
 
+CITATION_RECALL_PATH = "/root/ttcd-pub/mediator/citation_recall.py"
+
 VERSION = "1.0.0"
 CMP_DOI = "10.5281/zenodo.18732820"
 
@@ -98,6 +100,8 @@ def publish(artifact: dict, output_path: str = None) -> dict:
 def mediate(input_data: dict, output_path: str = None) -> dict:
     print(f"\n=== Mediator-Canonizer v{VERSION} ===")
     print(f"CMP DOI: {CMP_DOI}\n")
+    # Citation recall: surface prior frozen canons before processing
+    prior_art = _citation_recall(input_data.get("domain", ""), input_data.get("positions", []))
     s1 = intake(input_data)
     print(f"[1/7] Intake: {s1['position_count']} positions, type {s1['input_type']}")
     s2 = identify_overlap(s1["positions"])
@@ -116,8 +120,26 @@ def mediate(input_data: dict, output_path: str = None) -> dict:
     result = publish(s6, output_path)
     print(f"[7/7] Published")
     print(f"\nCitation: {result['citation']['cite_as']}\n")
+    if prior_art:
+        result["prior_art"] = prior_art
     return result
 
+
+
+
+def _citation_recall(domain: str, positions: list) -> dict:
+    """Pull prior art for a domain before mediation starts."""
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("citation_recall", CITATION_RECALL_PATH)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        claims = []
+        for p in positions:
+            claims.extend(p.get("claims", []))
+        return mod.recall(domain, claims)
+    except Exception as e:
+        return {"schema": "CitationRecall/1.0", "error": str(e)}
 
 def main():
     parser = argparse.ArgumentParser(description="Mediator-Canonizer v1.0 — CMP seven-step process")

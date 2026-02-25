@@ -89,6 +89,32 @@ def index():
 def health():
     return jsonify({"status": "ok", "service": "mediator-canonizer", "contract": CONTRACT})
 
+
+@app.route("/recall", methods=["GET", "POST"])
+def recall_endpoint():
+    """Pre-flight citation check. Returns prior frozen canons overlapping the domain."""
+    try:
+        if request.method == "POST":
+            data = request.get_json() or {}
+        else:
+            data = request.args.to_dict()
+            data["claims"] = request.args.getlist("claims")
+
+        domain = data.get("domain", "")
+        claims = data.get("claims", [])
+        if isinstance(claims, str):
+            claims = [claims]
+
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("citation_recall",
+            "/root/ttcd-pub/mediator/citation_recall.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        result = mod.recall(domain, claims)
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/mediate/free", methods=["POST"])
 def mediate_free():
     try:
