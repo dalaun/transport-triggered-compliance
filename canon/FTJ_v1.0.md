@@ -3,6 +3,7 @@
 # Author: Dalaun Finch
 # Version: 1.0
 # Status: FROZEN
+# DOI: 10.5281/zenodo.18748449
 # Cites: Transport-Triggered Compliance (TTC) v1.0
 
 ---

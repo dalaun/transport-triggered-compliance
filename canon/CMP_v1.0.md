@@ -3,6 +3,7 @@
 # Author: Dalaun Finch
 # Version: 1.0
 # Status: FROZEN
+# DOI: 10.5281/zenodo.18732820
 # Date: 2026
 # Cites: EIAAN v1.0
 
