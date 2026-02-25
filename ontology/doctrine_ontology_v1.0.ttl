@@ -1,0 +1,375 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cmp: <https://github.com/dalaun/transport-triggered-compliance/ontology/cmp#> .
+
+# ============================================================
+# Doctrine Ontology v1.0
+# Machine-readable canon of the canonization process
+# Author: Dalaun Finch
+# DOI: 10.5281/zenodo.18748449
+# ============================================================
+
+<https://github.com/dalaun/transport-triggered-compliance/ontology/cmp>
+    a owl:Ontology ;
+    rdfs:label "Doctrine Ontology v1.0" ;
+    rdfs:comment "Machine-readable canon of the Canonical Mediation Protocol" ;
+    owl:versionInfo "1.0.0" .
+
+# ============================================================
+# CORE CLASSES
+# ============================================================
+
+cmp:CanonicalArtifact a owl:Class ;
+    rdfs:label "Canonical Artifact" ;
+    rdfs:comment "A frozen, hashed, versioned doctrine produced by hardened mediation." .
+
+cmp:Claim a owl:Class ;
+    rdfs:label "Claim" ;
+    rdfs:comment "A proposition asserted by an agent as true within a domain." .
+
+cmp:Invariant a owl:Class ;
+    rdfs:subClassOf cmp:Claim ;
+    rdfs:label "Invariant" ;
+    rdfs:comment "A claim that survived adversarial stress testing and is shared across all positions." .
+
+cmp:Gap a owl:Class ;
+    rdfs:label "Gap" ;
+    rdfs:comment "A claim that failed stress testing or was not shared. Documented, not discarded." .
+
+cmp:Position a owl:Class ;
+    rdfs:label "Position" ;
+    rdfs:comment "The full set of claims submitted by a single agent in a mediation." .
+
+cmp:Domain a owl:Class ;
+    rdfs:label "Domain" ;
+    rdfs:comment "The subject area over which a mediation operates." .
+
+cmp:MediationProcess a owl:Class ;
+    rdfs:label "Mediation Process" ;
+    rdfs:comment "The seven-step CMP process that produces a canonical artifact." .
+
+cmp:StressTest a owl:Class ;
+    rdfs:label "Stress Test" ;
+    rdfs:comment "An adversarial attack on a candidate invariant before freezing." .
+
+cmp:GapMap a owl:Class ;
+    rdfs:label "Gap Map" ;
+    rdfs:comment "The complete record of gaps identified during a mediation." .
+
+cmp:CanonRegistry a owl:Class ;
+    rdfs:label "Canon Registry" ;
+    rdfs:comment "The on-chain record of all frozen canonical artifacts." .
+
+cmp:Operator a owl:Class ;
+    rdfs:label "Operator" ;
+    rdfs:comment "The entity that controls the canonizer and holds Version Sovereignty." .
+
+# ============================================================
+# NAMING STRUCTURES (from Naming Protocol v1.0)
+# ============================================================
+
+cmp:NamingStructure a owl:Class ;
+    rdfs:label "Naming Structure" ;
+    rdfs:comment "One of three valid patterns for canonical artifact names." .
+
+cmp:MechanismOutcome a owl:Class ;
+    rdfs:subClassOf cmp:NamingStructure ;
+    rdfs:label "Mechanism-Outcome" ;
+    rdfs:comment "Name pattern: [What triggers it]-[What results]. E.g. Flow-Triggered Jurisdiction." .
+
+cmp:PropertyDomain a owl:Class ;
+    rdfs:subClassOf cmp:NamingStructure ;
+    rdfs:label "Property-Domain" ;
+    rdfs:comment "Name pattern: [Defining property]-[Domain it applies to]. E.g. Hardened Mediation." .
+
+cmp:SingleInvariant a owl:Class ;
+    rdfs:subClassOf cmp:NamingStructure ;
+    rdfs:label "Single Invariant" ;
+    rdfs:comment "Name pattern: [The irreducible concept]. E.g. Canon Decay." .
+
+# ============================================================
+# JURISDICTIONAL DECLARATIONS (required for every canon)
+# ============================================================
+
+cmp:JurisdictionalDeclaration a owl:Class ;
+    rdfs:label "Jurisdictional Declaration" ;
+    rdfs:comment "One of three required declarations in every canonical artifact." .
+
+cmp:ScopeBoundary a owl:Class ;
+    rdfs:subClassOf cmp:JurisdictionalDeclaration ;
+    rdfs:label "Scope Boundary" ;
+    rdfs:comment "What the canon governs and what it does not govern." .
+
+cmp:FiduciaryMoment a owl:Class ;
+    rdfs:subClassOf cmp:JurisdictionalDeclaration ;
+    rdfs:label "Fiduciary Moment" ;
+    rdfs:comment "The exact instant at which responsibility crystallizes under the canon." .
+
+cmp:EvidenceStandard a owl:Class ;
+    rdfs:subClassOf cmp:JurisdictionalDeclaration ;
+    rdfs:label "Evidence Standard" ;
+    rdfs:comment "What counts as evidence that the canon applies in a given situation." .
+
+# ============================================================
+# CANON STATUS
+# ============================================================
+
+cmp:CanonStatus a owl:Class ;
+    rdfs:label "Canon Status" ;
+    rdfs:comment "The current status of a canonical artifact." .
+
+cmp:Frozen a owl:NamedIndividual, cmp:CanonStatus ;
+    rdfs:label "FROZEN" ;
+    rdfs:comment "Canon is current and authoritative. May be cited without qualification." .
+
+cmp:Aging a owl:NamedIndividual, cmp:CanonStatus ;
+    rdfs:label "AGING" ;
+    rdfs:comment "Canon remains substantially accurate but review is warranted." .
+
+cmp:Decayed a owl:NamedIndividual, cmp:CanonStatus ;
+    rdfs:label "DECAYED" ;
+    rdfs:comment "Canon is a historical artifact. Must be cited as dated, not current." .
+
+cmp:Draft a owl:NamedIndividual, cmp:CanonStatus ;
+    rdfs:label "DRAFT" ;
+    rdfs:comment "Canon has not passed stress testing. Not yet citable." .
+
+# ============================================================
+# OBJECT PROPERTIES
+# ============================================================
+
+cmp:hasPosition a owl:ObjectProperty ;
+    rdfs:domain cmp:MediationProcess ;
+    rdfs:range cmp:Position ;
+    rdfs:label "has position" .
+
+cmp:hasClaim a owl:ObjectProperty ;
+    rdfs:domain cmp:Position ;
+    rdfs:range cmp:Claim ;
+    rdfs:label "has claim" .
+
+cmp:producesInvariant a owl:ObjectProperty ;
+    rdfs:domain cmp:MediationProcess ;
+    rdfs:range cmp:Invariant ;
+    rdfs:label "produces invariant" .
+
+cmp:producesGap a owl:ObjectProperty ;
+    rdfs:domain cmp:MediationProcess ;
+    rdfs:range cmp:Gap ;
+    rdfs:label "produces gap" .
+
+cmp:producesArtifact a owl:ObjectProperty ;
+    rdfs:domain cmp:MediationProcess ;
+    rdfs:range cmp:CanonicalArtifact ;
+    rdfs:label "produces artifact" .
+
+cmp:hasStatus a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:CanonStatus ;
+    rdfs:label "has status" .
+
+cmp:hasNamingStructure a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:NamingStructure ;
+    rdfs:label "has naming structure" .
+
+cmp:hasScopeBoundary a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:ScopeBoundary ;
+    rdfs:label "has scope boundary" .
+
+cmp:hasFiduciaryMoment a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:FiduciaryMoment ;
+    rdfs:label "has fiduciary moment" .
+
+cmp:hasEvidenceStandard a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:EvidenceStandard ;
+    rdfs:label "has evidence standard" .
+
+cmp:operatedBy a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonRegistry ;
+    rdfs:range cmp:Operator ;
+    rdfs:label "operated by" .
+
+cmp:parentVersion a owl:ObjectProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range cmp:CanonicalArtifact ;
+    rdfs:label "parent version" ;
+    rdfs:comment "Links a canon version to the version it supersedes." .
+
+cmp:survivedStressTest a owl:ObjectProperty ;
+    rdfs:domain cmp:Invariant ;
+    rdfs:range cmp:StressTest ;
+    rdfs:label "survived stress test" .
+
+cmp:failedStressTest a owl:ObjectProperty ;
+    rdfs:domain cmp:Gap ;
+    rdfs:range cmp:StressTest ;
+    rdfs:label "failed stress test" .
+
+# ============================================================
+# DATATYPE PROPERTIES
+# ============================================================
+
+cmp:hasHash a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:label "has hash" .
+
+cmp:hasDOI a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:label "has DOI" .
+
+cmp:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "has timestamp" .
+
+cmp:hasVersion a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:label "has version" .
+
+cmp:hasDomain a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:label "has domain" .
+
+cmp:hasText a owl:DatatypeProperty ;
+    rdfs:domain cmp:Claim ;
+    rdfs:range xsd:string ;
+    rdfs:label "has text" .
+
+cmp:passedFunctionTest a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "passed function test" .
+
+cmp:passedInvariantTest a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "passed invariant test" .
+
+cmp:passedAgreementTest a owl:DatatypeProperty ;
+    rdfs:domain cmp:CanonicalArtifact ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "passed agreement test" .
+
+# ============================================================
+# RESTRICTIONS (what makes a canon valid)
+# ============================================================
+
+cmp:ValidCanon a owl:Class ;
+    rdfs:subClassOf cmp:CanonicalArtifact ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:hasStatus ;
+        owl:hasValue cmp:Frozen
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:hasScopeBoundary ;
+        owl:minCardinality 1
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:hasFiduciaryMoment ;
+        owl:minCardinality 1
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:hasEvidenceStandard ;
+        owl:minCardinality 1
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:passedFunctionTest ;
+        owl:hasValue true
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:passedInvariantTest ;
+        owl:hasValue true
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty cmp:passedAgreementTest ;
+        owl:hasValue true
+    ] ;
+    rdfs:label "Valid Canon" ;
+    rdfs:comment "A canonical artifact that satisfies all requirements for freezing." .
+
+# ============================================================
+# EXISTING CANON INSTANCES
+# ============================================================
+
+cmp:FTJ_v1 a cmp:ValidCanon ;
+    rdfs:label "Flow-Triggered Jurisdiction v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:MechanismOutcome ;
+    cmp:hasDomain "regulatory jurisdiction over high-risk flows" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
+
+cmp:TTC_v1 a cmp:ValidCanon ;
+    rdfs:label "Transport-Triggered Compliance v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:MechanismOutcome ;
+    cmp:hasDomain "compliance obligations in regulated transport" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
+
+cmp:CMP_v1 a cmp:ValidCanon ;
+    rdfs:label "Canonical Mediation Protocol v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:MechanismOutcome ;
+    cmp:hasDomain "canonical mediation between agents" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
+
+cmp:HardenedMediation_v1 a cmp:ValidCanon ;
+    rdfs:label "Hardened Mediation v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:PropertyDomain ;
+    cmp:hasDomain "mediation producing immutable output" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
+
+cmp:EpistemicCustody_v1 a cmp:ValidCanon ;
+    rdfs:label "Epistemic Custody v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:PropertyDomain ;
+    cmp:hasDomain "agent responsibility for held knowledge claims" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
+
+cmp:VersionSovereignty_v1 a cmp:ValidCanon ;
+    rdfs:label "Version Sovereignty v1.0" ;
+    cmp:hasVersion "1.0" ;
+    cmp:hasDOI "10.5281/zenodo.18748449" ;
+    cmp:hasStatus cmp:Frozen ;
+    cmp:hasNamingStructure cmp:PropertyDomain ;
+    cmp:hasDomain "operator authority over canonical versions and mutations" ;
+    cmp:passedFunctionTest true ;
+    cmp:passedInvariantTest true ;
+    cmp:passedAgreementTest true .
