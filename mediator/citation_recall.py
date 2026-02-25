@@ -70,8 +70,8 @@ def parse_canon_for_index(path: str) -> dict:
     doi = doi_m.group(1) if doi_m else None
 
     # Status
-    status_m = re.search(r"Status:\s*(\S+)", text)
-    status = status_m.group(1).rstrip(",") if status_m else "UNKNOWN"
+    status_m = re.search(r"Status:[*]*\s*([A-Z_]+)", text)
+    status = status_m.group(1).strip() if status_m else "UNKNOWN"
 
     # Scope boundary (from our added section)
     scope_m = re.search(r"\*\*Scope Boundary:\*\*\s*(.+)", text)

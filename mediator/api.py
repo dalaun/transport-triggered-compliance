@@ -97,16 +97,21 @@ def health():
 
 
 import uuid, time
+import dispute_store as _ds
 
-# ─── A2A dispute store (in-memory) ───────────────────────────────────────────
-_disputes = {}   # dispute_id -> {created, domain, declarations, positions, status}
 A2A_TTL = 3600   # disputes expire after 1 hour
 
 def _prune_disputes():
-    now = time.time()
-    expired = [k for k, v in _disputes.items() if now - v["created"] > A2A_TTL]
-    for k in expired:
-        del _disputes[k]
+    _ds.prune(A2A_TTL)
+
+def _disputes_get(did):
+    return _ds.get(did)
+
+def _disputes_put(did, dispute):
+    _ds.put(did, dispute)
+
+def _disputes_list_open():
+    return _ds.list_open()
 
 # ─── A2A endpoints ────────────────────────────────────────────────────────────
 
@@ -144,7 +149,7 @@ def a2a_initiate():
         return jsonify({"error": "domain and claims required"}), 400
 
     dispute_id = str(uuid.uuid4())[:8]
-    _disputes[dispute_id] = {
+    _disputes_put(dispute_id, {
         "created": time.time(),
         "domain": domain,
         "scope_boundary": data.get("scope_boundary", ""),
@@ -153,7 +158,7 @@ def a2a_initiate():
         "metadata": data.get("metadata", {}),
         "positions": [{"agent": agent_id, "claims": claims}],
         "status": "open"
-    }
+    })
 
     return jsonify({
         "schema": "A2A/1.0",
@@ -180,10 +185,9 @@ def a2a_respond(dispute_id):
 
     Returns: full mediation result (same as /mediate/free) once processed.
     """
-    if dispute_id not in _disputes:
+    dispute = _disputes_get(dispute_id)
+    if dispute is None:
         return jsonify({"error": "dispute not found or expired"}), 404
-
-    dispute = _disputes[dispute_id]
     if dispute["status"] != "open":
         return jsonify({"error": "dispute already resolved", "status": dispute["status"]}), 409
 
@@ -200,6 +204,7 @@ def a2a_respond(dispute_id):
 
     dispute["positions"].append({"agent": agent_id, "claims": claims})
     dispute["status"] = "mediating"
+    _disputes_put(dispute_id, dispute)
 
     # Build mediation payload and run CMP
     input_data = {
@@ -216,7 +221,7 @@ def a2a_respond(dispute_id):
         result = mediate(input_data)
         dispute["status"] = "resolved"
         dispute["result"] = result["citation"]
-        _disputes[dispute_id] = dispute
+        _disputes_put(dispute_id, dispute)
 
         result["a2a"] = {
             "schema": "A2A/1.0",
@@ -228,16 +233,16 @@ def a2a_respond(dispute_id):
 
     except Exception as e:
         dispute["status"] = "error"
+        _disputes_put(dispute_id, dispute)
         return jsonify({"error": str(e)}), 500
 
 
 @app.route("/a2a/dispute/<dispute_id>", methods=["GET"])
 def a2a_status(dispute_id):
     """Check status of an open or resolved dispute."""
-    if dispute_id not in _disputes:
+    dispute = _disputes_get(dispute_id)
+    if dispute is None:
         return jsonify({"error": "not found"}), 404
-
-    dispute = _disputes[dispute_id]
     resp = {
         "schema": "A2A/1.0",
         "dispute_id": dispute_id,
@@ -258,16 +263,15 @@ def a2a_list():
     _prune_disputes()
     open_disputes = [
         {
-            "dispute_id": did,
+            "dispute_id": d["id"],
             "domain": d["domain"],
             "status": d["status"],
             "parties": len(d["positions"]),
             "awaiting": "peer" if d["status"] == "open" else None,
-            "respond_url": f"/a2a/respond/{did}",
+            "respond_url": f"/a2a/respond/{d['id']}",
             "expires_in": max(0, A2A_TTL - (time.time() - d["created"]))
         }
-        for did, d in _disputes.items()
-        if d["status"] == "open"
+        for d in _disputes_list_open()
     ]
     return jsonify({"schema": "A2A/1.0", "open_disputes": open_disputes}), 200
 

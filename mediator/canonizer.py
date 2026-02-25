@@ -79,7 +79,8 @@ def produce_artifact(domain, candidates, gap_map, positions, metadata, scope="",
     # Run semantic validation before freezing
     semantic = semantic_validate(domain, invariants, name=domain, scope=scope, fiduciary=fiduciary, evidence=evidence)
     freeze_approved = semantic.get("verdict") == "FREEZE_APPROVED" or semantic.get("verdict") == "VALIDATOR_UNAVAILABLE"
-    final_status = "FROZEN" if (gap_map["canon_ready"] and freeze_approved) else "DRAFT"
+    has_invariants = len(invariants) > 0
+    final_status = "FROZEN" if (gap_map["canon_ready"] and freeze_approved and has_invariants) else "DRAFT"
 
     artifact = {"schema": "CMP/1.0", "cmp_doi": CMP_DOI, "domain": domain, "status": final_status, "timestamp": timestamp, "invariants": invariants, "candidate_count": len(candidates), "position_count": len(positions), "gap_map": gap_map, "semantic_validation": semantic, "metadata": metadata}
     content = json.dumps({k: v for k, v in artifact.items() if k != "hash"}, sort_keys=True).encode()
