@@ -71,11 +71,11 @@ def build_gap_map(stress: dict) -> dict:
     return {"step": "gap_map", "total_gaps": stress["gap_count"], "critical_gaps": len(stress["critical_gaps"]), "gaps": stress["gaps"], "canon_ready": len(stress["critical_gaps"]) == 0}
 
 
-def produce_artifact(domain, candidates, gap_map, positions, metadata) -> dict:
+def produce_artifact(domain, candidates, gap_map, positions, metadata, scope="", fiduciary="", evidence="") -> dict:
     invariants = [c["proposition"] for c in candidates if c["source"] == "shared"]
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z"
     # Run semantic validation before freezing
-    semantic = semantic_validate(domain, invariants)
+    semantic = semantic_validate(domain, invariants, name=domain, scope=scope, fiduciary=fiduciary, evidence=evidence)
     freeze_approved = semantic.get("verdict") == "FREEZE_APPROVED" or semantic.get("verdict") == "VALIDATOR_UNAVAILABLE"
     final_status = "FROZEN" if (gap_map["canon_ready"] and freeze_approved) else "DRAFT"
 
@@ -108,7 +108,10 @@ def mediate(input_data: dict, output_path: str = None) -> dict:
     print(f"[4/7] Stress Test: {s4['gap_count']} gaps, {len(s4['critical_gaps'])} critical")
     s5 = build_gap_map(s4)
     print(f"[5/7] Gap Map: canon_ready={s5['canon_ready']}")
-    s6 = produce_artifact(s1["domain"], s3["candidates"], s5, s1["positions"], input_data.get("metadata", {}))
+    scope     = input_data.get("scope_boundary", "")
+    fiduciary = input_data.get("fiduciary_moment", "")
+    evidence  = input_data.get("evidence_standard", "")
+    s6 = produce_artifact(s1["domain"], s3["candidates"], s5, s1["positions"], input_data.get("metadata", {}), scope=scope, fiduciary=fiduciary, evidence=evidence)
     print(f"[6/7] Artifact: status={s6['artifact']['status']}, hash={s6['artifact']['hash'][:16]}...")
     result = publish(s6, output_path)
     print(f"[7/7] Published")
@@ -131,6 +134,9 @@ def main():
                 {"agent": "agent-alpha", "claims": ["flows trigger jurisdiction", "movement creates obligation", "intent is irrelevant"]},
                 {"agent": "agent-beta",  "claims": ["flows trigger jurisdiction", "movement creates obligation", "custody requires physical control"]}
             ],
+            "scope_boundary": "Governs disputes where agents hold conflicting knowledge claims about the same domain. Does not govern disputes about values or preferences.",
+            "fiduciary_moment": "The moment an agent asserts a claim derived from another without citation.",
+            "evidence_standard": "Shared invariants that survive adversarial stress test across all agent positions.",
             "metadata": {"session": "demo", "version": "1.0"}
         }
         result = mediate(demo_input, args.output)

@@ -57,8 +57,9 @@ def try_register_on_chain(result):
 def index():
     return jsonify({
         "service": "Mediator-Canonizer API",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "cmp_doi": "10.5281/zenodo.18732820",
+        "ontology_doi": "10.5281/zenodo.18748449",
         "contract": CONTRACT,
         "network": "Base mainnet (8453)",
         "price": "$0.05 USDC per mediation",
@@ -66,7 +67,22 @@ def index():
             "POST /mediate": "Submit positions for canonization (requires x402 payment)",
             "POST /mediate/free": "Free mediation (no on-chain registration)",
             "GET /health": "Service health check"
-        }
+        },
+        "payload_schema": {
+            "domain": "string: the domain being mediated",
+            "positions": "array of {agent, claims[]}, at least 2 required",
+            "scope_boundary": "what this canon governs — required for FROZEN status",
+            "fiduciary_moment": "the moment canonical obligation attaches — required for FROZEN status",
+            "evidence_standard": "what constitutes sufficient evidence — required for FROZEN status",
+            "type": "optional: A (agent) or B (human), default B",
+            "metadata": "optional metadata object"
+        },
+        "freeze_requirements": [
+            ">=2 positions with shared claims",
+            "no critical gaps after stress test",
+            "all 3 naming tests pass (Function, Invariant, Agreement)",
+            "all 3 jurisdictional declarations non-empty"
+        ]
     })
 
 @app.route("/health", methods=["GET"])
