@@ -12,7 +12,7 @@ app = Flask(__name__)
 OPERATOR = "0xeb65c54ee09AAc48612Dc77e6d106005547dF67A"
 CONTRACT = "0xf2325531264CA4Fc2cEC5D661E2200eA8013b091"
 USDC_BASE = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
-PRICE_USDC = 50000  # $1.00 in USDC (6 decimals)
+PRICE_USDC = 50000  # $0.05 in USDC (6 decimals)
 NETWORK = "eip155:8453"
 
 facilitator = HTTPFacilitatorClientSync({"url": "https://x402.org/facilitator"})
