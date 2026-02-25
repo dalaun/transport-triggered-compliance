@@ -2,7 +2,7 @@
 # A First-Principles Framework for Regulatory Jurisdiction Over Regulated Flows
 # Author: Dalaun Finch
 # Version: 1.0
-# Status: DRAFT — stress-tested against TTC v1.0 gap map
+# Status: FROZEN
 # Cites: Transport-Triggered Compliance (TTC) v1.0
 
 ---
