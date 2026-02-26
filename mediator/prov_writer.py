@@ -21,6 +21,7 @@ PROV_DIR = os.path.join(os.path.dirname(__file__), "..", "provenance")
 PROV_NS  = "https://ttcd.io/provenance/"
 TTCD_NS  = "https://ttcd.io/ontology#"
 PROV     = "http://www.w3.org/ns/prov#"
+TIME     = "http://www.w3.org/2006/time#"
 XSD      = "http://www.w3.org/2001/XMLSchema#"
 
 
@@ -80,7 +81,19 @@ def write_canon_provenance(canon_hash, domain, status, agents,
             safe_k = k.replace("-", "_")
             meta_block += f'    ttcd:{safe_k} "{str(v).replace(chr(34), "")}" ;\n'
 
+    # OWL Time block — CMP run as time:ProperInterval, frozen instant as time:Instant
+    time_block = (
+        f'<{activity_uri}>\n'
+        f'    time:hasBeginning [ a time:Instant ; time:inXSDDateTimeStamp "{started_iso}"^^xsd:dateTimeStamp ] ;\n'
+        f'    time:hasEnd       [ a time:Instant ; time:inXSDDateTimeStamp "{ended_iso}"^^xsd:dateTimeStamp ] .\n'
+        f'\n'
+        f'<{canon_uri}>\n'
+        f'    time:hasTime [ a ttcd:FiduciaryMoment , time:Instant ;\n'
+        f'                   time:inXSDDateTimeStamp "{ended_iso}"^^xsd:dateTimeStamp ] .\n'
+    )
+
     ttl = f"""@prefix prov:  <{PROV}> .
+@prefix time:  <{TIME}> .
 @prefix ttcd:  <{TTCD_NS}> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:   <{XSD}> .
@@ -112,6 +125,7 @@ def write_canon_provenance(canon_hash, domain, status, agents,
 
 {''.join(agent_blocks)}
 {supersedes_block}
+{time_block}
 """
 
     path = os.path.join(PROV_DIR, f"{canon_hash}.ttl")

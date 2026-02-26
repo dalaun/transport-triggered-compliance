@@ -1,0 +1,192 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# ── TTCD doctrine namespace ────────────────────────────────────────────────
+@prefix ttcd: <https://ttcd.io/ontology#> .
+
+# ── OWL Time namespace ─────────────────────────────────────────────────────
+@prefix time: <http://www.w3.org/2006/time#> .
+
+# ── PROV-O (cross-reference) ───────────────────────────────────────────────
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ══════════════════════════════════════════════════════════════════════════
+# TTCD–OWL Time Alignment v1.0
+#
+# Maps TTCD temporal concepts to W3C OWL Time ontology.
+# The binding_moment concept is central to three canons:
+#   PDR v1.0  — price at commitment (HTLC lock timestamp)
+#   DPA v1.0  — provenance at first structured capture
+#   SLO v1.0  — obligation binds at dependency decision
+#
+# With OWL Time, these instants are typed, ordered, and queryable.
+# The oracle lag challenge can now be expressed as a temporal axiom:
+#   oracleCacheInstant time:before htlcLockInstant
+# rather than a prose argument about a 4-minute gap.
+# ══════════════════════════════════════════════════════════════════════════
+
+<https://ttcd.io/ontology/owl-time-alignment>
+    a owl:Ontology ;
+    rdfs:label "TTCD–OWL Time Alignment v1.0" ;
+    dcterms:description "Alignment between TTCD temporal concepts and W3C OWL Time ontology." ;
+    dcterms:created "2026-02-26"^^xsd:date ;
+    owl:versionInfo "1.0" .
+
+
+# ── 1. Fiduciary Moment = time:Instant ───────────────────────────────────
+# The moment at which an obligation becomes binding.
+# In Veritaseum context: the HTLC asset lock timestamp.
+# In DPA context: the timestamp of first structured data capture.
+# In SLO context: the instant the dependency decision was made.
+
+ttcd:FiduciaryMoment
+    a owl:Class ;
+    rdfs:label "Fiduciary Moment"@en ;
+    rdfs:subClassOf time:Instant ;
+    skos:definition "A precise instant at which an obligation becomes irrevocably binding. Not an interval — a point."@en ;
+    skos:note "Maps to time:Instant (not time:Interval). The fiduciary moment has no duration. It is the knife-edge between before and after."@en .
+
+ttcd:hasFiduciaryMoment
+    a owl:ObjectProperty ;
+    rdfs:label "has fiduciary moment"@en ;
+    rdfs:range ttcd:FiduciaryMoment ;
+    rdfs:subPropertyOf time:hasTime .
+
+ttcd:fiduciaryTimestamp
+    a owl:DatatypeProperty ;
+    rdfs:label "fiduciary timestamp"@en ;
+    rdfs:domain ttcd:FiduciaryMoment ;
+    rdfs:range  xsd:dateTimeStamp ;
+    rdfs:subPropertyOf time:inXSDDateTimeStamp ;
+    skos:note "The XSD dateTimeStamp of the fiduciary moment. Required field — a fiduciary moment without a timestamp is not verifiable."@en .
+
+
+# ── 2. HTLC Lock Timestamp ────────────────────────────────────────────────
+# The specific fiduciary moment in Veritaseum atomic swap disputes.
+
+ttcd:HTLCLockTimestamp
+    a owl:Class ;
+    rdfs:label "HTLC Lock Timestamp"@en ;
+    rdfs:subClassOf ttcd:FiduciaryMoment ;
+    skos:definition "The on-chain timestamp at which both parties' assets are locked into HTLC escrow — the canonical fiduciary moment for PDR v1.0 price determination."@en ;
+    skos:note "This is a time:Instant. Everything before it (oracle cache, negotiation) is prior. Everything after it (settlement, dispute) is posterior."@en .
+
+
+# ── 3. Oracle Cache Instant ───────────────────────────────────────────────
+# The moment an oracle cached the price it reported.
+# In Challenge A: CoinGecko cached at 22:31:02Z, applied at 22:35:06Z.
+# Formally: oracleCacheInstant time:before htlcLockInstant
+
+ttcd:OracleCacheInstant
+    a owl:Class ;
+    rdfs:label "Oracle Cache Instant"@en ;
+    rdfs:subClassOf time:Instant ;
+    skos:definition "The instant at which an oracle stored the price snapshot it subsequently reported."@en ;
+    skos:note "If this instant precedes the HTLCLockTimestamp by more than the acceptable staleness window, the oracle price is stale under PDR v1.0."@en .
+
+ttcd:cacheTimestamp
+    a owl:DatatypeProperty ;
+    rdfs:label "cache timestamp"@en ;
+    rdfs:domain ttcd:OracleCacheInstant ;
+    rdfs:range  xsd:dateTimeStamp ;
+    rdfs:subPropertyOf time:inXSDDateTimeStamp .
+
+
+# ── 4. Oracle Lag = time:Duration ─────────────────────────────────────────
+# The temporal gap between oracle cache and the fiduciary moment.
+# Challenge A: lag = 240 seconds (4 minutes).
+# This is now a typed time:Duration, not just an integer.
+
+ttcd:OracleLag
+    a owl:Class ;
+    rdfs:label "Oracle Lag"@en ;
+    rdfs:subClassOf time:Duration ;
+    skos:definition "The duration between when an oracle cached its price and the fiduciary moment at which that price was applied."@en ;
+    skos:note "Expressed as time:seconds. If OracleLag > 0 and the market is volatile, the oracle price may not equal the spot price at commitment. This is the factual basis for a valid PDR challenge."@en .
+
+ttcd:lagSeconds
+    a owl:DatatypeProperty ;
+    rdfs:label "lag in seconds"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  xsd:decimal ;
+    rdfs:subPropertyOf time:seconds .
+
+ttcd:hasCacheInstant
+    a owl:ObjectProperty ;
+    rdfs:label "has cache instant"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  ttcd:OracleCacheInstant .
+
+ttcd:hasApplicationInstant
+    a owl:ObjectProperty ;
+    rdfs:label "has application instant"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  ttcd:FiduciaryMoment .
+
+
+# ── 5. CMP Run = time:ProperInterval ─────────────────────────────────────
+# The CMP has a definite start (intake) and end (published).
+# This interval is now formally typed — not just timestamps in a log.
+
+ttcd:CMPRun
+    a owl:Class ;
+    rdfs:label "CMP Run"@en ;
+    rdfs:subClassOf time:ProperInterval ;
+    owl:equivalentClass prov:Activity ;
+    skos:definition "A single execution of the Canonical Mediation Protocol, from intake to canon publication."@en ;
+    skos:note "Maps to both time:ProperInterval (temporal extent) and prov:Activity (provenance). The start is intake; the end is publication of the frozen canon."@en .
+
+ttcd:cmpStartedAt
+    a owl:DatatypeProperty ;
+    rdfs:label "CMP started at"@en ;
+    rdfs:domain ttcd:CMPRun ;
+    rdfs:range  xsd:dateTimeStamp ;
+    rdfs:subPropertyOf time:hasBeginning .
+
+ttcd:cmpEndedAt
+    a owl:DatatypeProperty ;
+    rdfs:label "CMP ended at"@en ;
+    rdfs:domain ttcd:CMPRun ;
+    rdfs:range  xsd:dateTimeStamp ;
+    rdfs:subPropertyOf time:hasEnd .
+
+
+# ── 6. Negotiation Window ─────────────────────────────────────────────────
+# The time between the first intent broadcast and HTLC lock.
+# If this window is long and the market moved, price-at-broadcast
+# vs price-at-commitment creates a legitimate dispute surface.
+
+ttcd:NegotiationWindow
+    a owl:Class ;
+    rdfs:label "Negotiation Window"@en ;
+    rdfs:subClassOf time:ProperInterval ;
+    skos:definition "The interval between a maker's intent broadcast and the HTLC asset lock. Market movement within this window can create price-at-broadcast vs price-at-commitment disputes."@en .
+
+
+# ── 7. Temporal ordering axioms ───────────────────────────────────────────
+# Assert the canonical ordering of events in a Veritaseum dispute.
+# These are SHACL-style constraints expressed as OWL restrictions.
+
+# OracleCache must precede FiduciaryMoment
+# (encoded as a note — full SHACL constraint goes in shacl_constraints.ttl)
+ttcd:OracleCacheInstant
+    skos:note "TEMPORAL CONSTRAINT: An OracleCacheInstant must satisfy time:before the FiduciaryMoment of the same dispute. If it does not, the oracle was not stale — it was live."@en .
+
+
+# ── OWL Time class stubs (prevent dangling references) ────────────────────
+time:Instant        a owl:Class ; rdfs:label "Instant"@en .
+time:Interval       a owl:Class ; rdfs:label "Interval"@en .
+time:ProperInterval a owl:Class ; rdfs:subClassOf time:Interval ; rdfs:label "Proper Interval"@en .
+time:Duration       a owl:Class ; rdfs:label "Duration"@en .
+
+time:hasTime           a owl:ObjectProperty ; rdfs:label "has time"@en .
+time:inXSDDateTimeStamp a owl:DatatypeProperty ; rdfs:label "in XSD dateTimeStamp"@en .
+time:before            a owl:ObjectProperty ; rdfs:label "before"@en .
+time:after             a owl:ObjectProperty ; rdfs:label "after"@en .
+time:hasBeginning      a owl:ObjectProperty ; rdfs:label "has beginning"@en .
+time:hasEnd            a owl:ObjectProperty ; rdfs:label "has end"@en .
+time:seconds           a owl:DatatypeProperty ; rdfs:label "seconds"@en .
