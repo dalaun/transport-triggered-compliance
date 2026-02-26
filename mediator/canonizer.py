@@ -12,6 +12,8 @@ import datetime
 import argparse
 import sys
 from pathlib import Path
+import prov_writer as _prov
+import time as _time
 
 CITATION_RECALL_PATH = "/root/ttcd-pub/mediator/citation_recall.py"
 
@@ -123,6 +125,24 @@ def mediate(input_data: dict, output_path: str = None) -> dict:
     print(f"\nCitation: {result['citation']['cite_as']}\n")
     if prior_art:
         result["prior_art"] = prior_art
+
+    # Write PROV-O provenance for FROZEN canons
+    _cmp_start = _time.time()
+    canon = result.get("canon", {})
+    if canon.get("status") == "FROZEN":
+        agents = [p.get("agent", "unknown") for p in s1["positions"]]
+        prov_path = _prov.write_canon_provenance(
+            canon_hash = canon["hash"],
+            domain     = canon["domain"],
+            status     = canon["status"],
+            agents     = agents,
+            started_at = _cmp_start - 10,
+            ended_at   = _time.time(),
+            metadata   = input_data.get("metadata", {})
+        )
+        if prov_path:
+            result["provenance"] = {"ttl": "/prov/" + canon["hash"], "written": True}
+            print("[PROV] Written: " + prov_path)
     return result
 
 

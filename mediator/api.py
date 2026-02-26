@@ -34,7 +34,7 @@ def try_register_on_chain(result):
 def index():
     return jsonify({
         "service": "Mediator-Canonizer API",
-        "version": "1.3.0",
+        "version": "1.4.0",
         "cmp_doi": "10.5281/zenodo.18732820",
         "ontology_doi": "10.5281/zenodo.18748449",
         "contract": CONTRACT,
@@ -79,6 +79,7 @@ def health():
 import uuid, time
 import dispute_store as _ds
 import challenge_store as _cs
+import prov_writer as _prov
 
 A2A_TTL = 3600   # disputes expire after 1 hour
 
@@ -515,6 +516,29 @@ def canon_challenges_list():
         "summary":    summary,
         "challenges": challenges
     }), 200
+
+
+
+# ── Provenance endpoints ──────────────────────────────────────────────────────
+
+@app.route("/prov/<canon_hash>", methods=["GET"])
+def canon_provenance(canon_hash):
+    """Return PROV-O Turtle for a frozen canon."""
+    ttl = _prov.get_provenance_ttl(canon_hash)
+    if not ttl:
+        return jsonify({"error": "No provenance record for this canon"}), 404
+    accept = request.headers.get("Accept", "")
+    if "text/turtle" in accept or "text/plain" in accept:
+        from flask import Response
+        return Response(ttl, mimetype="text/turtle")
+    return jsonify({"schema": "Provenance/1.0", "canon_hash": canon_hash, "ttl": ttl}), 200
+
+
+@app.route("/prov", methods=["GET"])
+def provenance_index():
+    """List all canon hashes with provenance records."""
+    hashes = _prov.list_provenance()
+    return jsonify({"schema": "Provenance/1.0", "count": len(hashes), "canons": hashes}), 200
 
 
 if __name__ == "__main__":
