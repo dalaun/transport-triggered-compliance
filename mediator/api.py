@@ -1,39 +1,16 @@
 from flask import Flask, request, jsonify
 from canonizer import mediate
-from x402.server import x402ResourceServerSync
-from x402.http import HTTPFacilitatorClientSync
-from x402.mechanisms.evm.exact import ExactEvmServerScheme
-from x402 import PaymentRequirements, PaymentRequirementsV1
+from x402_gate import (
+    require_payment, x402_server,
+    PRICE_MEDIATE, PRICE_RESPOND, PRICE_CHALLENGE,
+    NETWORK, OPERATOR
+)
 import os, sys, json, base64
 sys.path.insert(0, '/root/ttcd-pub/mediator')
 
 app = Flask(__name__)
 
-OPERATOR = "0xeb65c54ee09AAc48612Dc77e6d106005547dF67A"
 CONTRACT = "0xf2325531264CA4Fc2cEC5D661E2200eA8013b091"
-USDC_BASE = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
-PRICE_USDC = 50000  # $0.05 in USDC (6 decimals)
-NETWORK = "eip155:8453"
-
-facilitator = HTTPFacilitatorClientSync({"url": "https://x402.org/facilitator"})
-x402_server = x402ResourceServerSync(facilitator)
-x402_server.register(NETWORK, ExactEvmServerScheme())
-x402_server.initialize()
-
-def get_payment_requirements():
-    return {
-        "scheme": "exact",
-        "network": NETWORK,
-        "maxAmountRequired": str(PRICE_USDC),
-        "resource": "http://76.13.107.248:8745/mediate",
-        "description": "Canonical mediation via CMP v1.0",
-        "mimeType": "application/json",
-        "payTo": OPERATOR,
-        "maxTimeoutSeconds": 300,
-        "asset": USDC_BASE,
-        "outputSchema": None,
-        "extra": {"cmp_doi": "10.5281/zenodo.18732820"}
-    }
 
 def try_register_on_chain(result):
     try:
@@ -57,7 +34,7 @@ def try_register_on_chain(result):
 def index():
     return jsonify({
         "service": "Mediator-Canonizer API",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "cmp_doi": "10.5281/zenodo.18732820",
         "ontology_doi": "10.5281/zenodo.18748449",
         "contract": CONTRACT,
@@ -177,6 +154,7 @@ def a2a_initiate():
 
 
 @app.route("/a2a/respond/<dispute_id>", methods=["POST"])
+@require_payment(PRICE_RESPOND, "A2A dispute response — triggers CMP")
 def a2a_respond(dispute_id):
     """
     Peer agent joins an open dispute and triggers mediation.
@@ -317,44 +295,16 @@ def mediate_free():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/mediate", methods=["POST"])
+@require_payment(PRICE_MEDIATE, "Canonical mediation via CMP v1.0")
 def mediate_route():
-    payment_header = request.headers.get("X-PAYMENT")
-
-    if not payment_header:
-        requirements = get_payment_requirements()
-        return jsonify({
-            "error": "Payment required",
-            "x402Version": 1,
-            "accepts": [requirements]
-        }), 402
-
-    try:
-        from x402 import PaymentPayload, PaymentPayloadV1
-        payload = PaymentPayload.model_validate_json(
-            base64.b64decode(payment_header).decode()
-        )
-        requirements_obj = PaymentRequirements(**get_payment_requirements())
-        verify_result = x402_server.verify_payment(payload, requirements_obj)
-
-        if not verify_result.is_valid:
-            return jsonify({"error": "Invalid payment", "detail": str(verify_result)}), 402
-
-        input_data = request.get_json()
-        if not input_data or len(input_data.get("positions", [])) < 2:
-            return jsonify({"error": "At least two positions required"}), 400
-
-        result = mediate(input_data)
-        chain_result = try_register_on_chain(result)
-        if chain_result:
-            result["chain"] = chain_result
-
-        settle_result = x402_server.settle_payment(payload, requirements_obj)
-        result["payment"] = {"settled": settle_result.success, "network": NETWORK}
-
-        return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    input_data = request.get_json()
+    if not input_data or len(input_data.get("positions", [])) < 2:
+        return jsonify({"error": "At least two positions required"}), 400
+    result = mediate(input_data)
+    chain_result = try_register_on_chain(result)
+    if chain_result:
+        result["chain"] = chain_result
+    return jsonify(result), 200
 
 import uuid, time
 import challenge_store as _cs
@@ -362,6 +312,7 @@ import challenge_store as _cs
 # ── Challenge endpoints ───────────────────────────────────────────────────────
 
 @app.route("/canon/challenge", methods=["POST"])
+@require_payment(PRICE_CHALLENGE, "Canon challenge — merit-based attack on frozen invariant")
 def canon_challenge():
     """
     Submit a merit-based challenge to a frozen canon invariant.
@@ -567,7 +518,7 @@ def canon_challenges_list():
 
 
 if __name__ == "__main__":
-    print("Mediator-Canonizer API v1.0 — x402 enabled")
+    print("Mediator-Canonizer API v1.3.0 — x402 gated on /mediate, /a2a/respond, /canon/challenge")
     print(f"Price: $1.00 USDC per mediation")
     print(f"Operator: {OPERATOR}")
     print(f"Contract: {CONTRACT}")
