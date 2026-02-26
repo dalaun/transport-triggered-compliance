@@ -1,0 +1,202 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# ── TTCD doctrine namespace ────────────────────────────────────────────────
+@prefix ttcd: <https://ttcd.io/ontology#> .
+
+# ── FIBO namespaces (verified against live modules) ────────────────────────
+@prefix fibo-fnd-acc-cur: <https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/> .
+@prefix fibo-fnd-dt-fd:   <https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/> .
+@prefix fibo-fbc-fct-mkt: <https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/> .
+@prefix fibo-ind-fx-fx:   <https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/> .
+
+# ══════════════════════════════════════════════════════════════════════════
+# TTCD–FIBO Alignment Ontology v1.0
+# Maps TTCD doctrine vocabulary to verified FIBO classes and properties.
+# Loaded into GraphDB ttcd-canon repo as a named graph.
+#
+# Purpose: ground TTCD canon terms in professional financial ontology so
+# that prior art recall can match on semantic type, not just string similarity.
+# ══════════════════════════════════════════════════════════════════════════
+
+<https://ttcd.io/ontology/fibo-alignment>
+    a owl:Ontology ;
+    rdfs:label "TTCD–FIBO Alignment v1.0" ;
+    dcterms:description "Alignment between TTCD canonical doctrine vocabulary and FIBO financial ontology." ;
+    dcterms:created "2026-02-26"^^xsd:date ;
+    owl:versionInfo "1.0" .
+
+
+# ── 1. Market Rate at Commitment ─────────────────────────────────────────
+# PDR v1.0 core: "the machine-readable market rate at the moment of commitment"
+# FIBO: CurrencySpotRate — the rate at which a currency pair trades right now
+
+ttcd:MarketRateAtCommitment
+    a owl:Class ;
+    rdfs:label "Market Rate at Commitment"@en ;
+    skos:definition "The machine-readable spot rate for a currency pair at the fiduciary moment of asset lock, as defined by PDR v1.0."@en ;
+    rdfs:subClassOf fibo-ind-fx-fx:CurrencySpotRate ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            fibo-ind-fx-fx:CurrencySpotRate
+            [ a owl:Restriction ;
+              owl:onProperty ttcd:hasCommitmentMoment ;
+              owl:someValuesFrom ttcd:FiduciaryMoment ]
+        )
+    ] ;
+    skos:note "In TTCD mediation, this is the price that becomes the frozen invariant under PDR v1.0. The commitment moment is the HTLC asset lock timestamp."@en .
+
+ttcd:FiduciaryMoment
+    a owl:Class ;
+    rdfs:label "Fiduciary Moment"@en ;
+    skos:definition "The precise instant at which an obligation becomes binding — in Veritaseum HTLC context, this is the asset lock timestamp."@en ;
+    rdfs:subClassOf fibo-fnd-dt-fd:CalculationPeriod ;
+    skos:note "Maps to FIBO CalculationPeriod as a degenerate (zero-duration) period — a precise instant rather than an interval."@en .
+
+ttcd:hasCommitmentMoment
+    a owl:ObjectProperty ;
+    rdfs:label "has commitment moment"@en ;
+    rdfs:domain ttcd:MarketRateAtCommitment ;
+    rdfs:range  ttcd:FiduciaryMoment .
+
+
+# ── 2. Price and Exchange Rate types ─────────────────────────────────────
+# PDR v1.0 uses: spot price, oracle price, acquisition cost
+# These must be distinguished so CMP can identify category mismatches
+
+ttcd:SpotPrice
+    a owl:Class ;
+    rdfs:label "Spot Price"@en ;
+    owl:equivalentClass fibo-ind-fx-fx:CurrencySpotRate ;
+    skos:note "The live market rate. Under PDR v1.0, this is the binding reference price."@en .
+
+ttcd:AcquisitionCost
+    a owl:Class ;
+    rdfs:label "Acquisition Cost"@en ;
+    rdfs:subClassOf fibo-fnd-acc-cur:MonetaryPrice ;
+    skos:note "What a party paid to acquire an asset — distinct from SpotPrice. Positional Independence: an agent cannot substitute AcquisitionCost for SpotPrice in a price determination dispute."@en .
+
+ttcd:OraclePrice
+    a owl:Class ;
+    rdfs:label "Oracle Price"@en ;
+    rdfs:subClassOf fibo-fnd-acc-cur:CalculatedPrice ;
+    skos:definition "A price produced by an automated data aggregator (oracle) rather than a live exchange feed."@en ;
+    skos:note "An oracle price may differ from spot price due to aggregation lag, sampling frequency, or cache staleness. The distinction is material in PDR v1.0 challenges."@en .
+
+ttcd:ExchangeFeedPrice
+    a owl:Class ;
+    rdfs:label "Exchange Feed Price"@en ;
+    rdfs:subClassOf fibo-ind-fx-fx:CurrencySpotMidRate ;
+    skos:definition "A price read directly from an exchange order book at a specific timestamp."@en ;
+    skos:note "Considered higher-quality evidence than oracle price in TTCD challenge protocol. Three corroborating exchange feeds constitute strong new evidence."@en .
+
+
+# ── 3. Exchange / Market ─────────────────────────────────────────────────
+# Named exchanges in TTCD evidence (Binance, Coinbase, Kraken, CoinGecko)
+# FIBO: Exchange, CryptoAssetServicesProvider
+
+ttcd:CryptoExchange
+    a owl:Class ;
+    rdfs:label "Cryptocurrency Exchange"@en ;
+    rdfs:subClassOf fibo-fbc-fct-mkt:CryptoAssetServicesProvider ;
+    owl:equivalentClass fibo-fbc-fct-mkt:Exchange ;
+    skos:note "A venue providing live cryptocurrency spot prices. In TTCD evidence, exchange feed logs from fibo:CryptoAssetServicesProvider instances outweigh aggregator oracle data."@en .
+
+ttcd:PriceAggregator
+    a owl:Class ;
+    rdfs:label "Price Aggregator (Oracle)"@en ;
+    rdfs:subClassOf fibo-fbc-fct-mkt:DataReportingServicesProvider ;
+    skos:definition "A service that aggregates prices from multiple sources, introducing potential lag."@en ;
+    skos:example "CoinGecko, CoinMarketCap"@en .
+
+
+# ── 4. Exchange Rate structure ────────────────────────────────────────────
+# The USDC/ETH pair in Veritaseum disputes
+
+ttcd:CurrencyPairRate
+    a owl:Class ;
+    rdfs:label "Currency Pair Rate"@en ;
+    rdfs:subClassOf fibo-ind-fx-fx:CurrencySpotRate ;
+    skos:note "The exchange rate for a specific currency pair (e.g. ETH/USDC) at a given timestamp."@en .
+
+ttcd:hasBaseAsset
+    a owl:DatatypeProperty ;
+    rdfs:label "has base asset"@en ;
+    rdfs:domain ttcd:CurrencyPairRate ;
+    rdfs:range  xsd:string .
+
+ttcd:hasQuoteAsset
+    a owl:DatatypeProperty ;
+    rdfs:label "has quote asset"@en ;
+    rdfs:domain ttcd:CurrencyPairRate ;
+    rdfs:range  xsd:string .
+
+ttcd:hasRateValue
+    a owl:DatatypeProperty ;
+    rdfs:label "has rate value"@en ;
+    rdfs:subPropertyOf fibo-fnd-acc-cur:hasRateValue ;
+    rdfs:domain ttcd:CurrencyPairRate ;
+    rdfs:range  xsd:decimal .
+
+
+# ── 5. Oracle Lag (the PDR challenge scenario) ────────────────────────────
+# Formal representation of the CoinGecko 4-minute lag from Challenge A
+
+ttcd:OracleLag
+    a owl:Class ;
+    rdfs:label "Oracle Lag"@en ;
+    skos:definition "The temporal difference between when an oracle cached a price and the fiduciary moment at which it was applied."@en ;
+    skos:note "Material in PDR v1.0 challenges. If OracleLag > 0 and the market moved during the lag period, the oracle price may not equal the SpotPrice at commitment."@en .
+
+ttcd:hasCacheTimestamp
+    a owl:DatatypeProperty ;
+    rdfs:label "has cache timestamp"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  xsd:dateTime .
+
+ttcd:hasApplicationTimestamp
+    a owl:DatatypeProperty ;
+    rdfs:label "has application timestamp"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  xsd:dateTime .
+
+ttcd:lagSeconds
+    a owl:DatatypeProperty ;
+    rdfs:label "lag in seconds"@en ;
+    rdfs:domain ttcd:OracleLag ;
+    rdfs:range  xsd:integer .
+
+
+# ── 6. Atomic Swap / HTLC ────────────────────────────────────────────────
+# The Veritaseum settlement primitive
+
+ttcd:AtomicSwap
+    a owl:Class ;
+    rdfs:label "Atomic Swap"@en ;
+    skos:definition "A trustless peer-to-peer exchange of assets across chains using hash time-locked contracts (HTLC)."@en ;
+    rdfs:subClassOf fibo-fnd-acc-cur:MonetaryAmount ;
+    skos:note "The HTLC asset lock is the fiduciary moment in Veritaseum-originated TTCD disputes."@en .
+
+ttcd:HTLCLockTimestamp
+    a owl:Class ;
+    rdfs:label "HTLC Lock Timestamp"@en ;
+    rdfs:subClassOf ttcd:FiduciaryMoment ;
+    skos:definition "The on-chain timestamp at which both parties' assets are locked into escrow — the canonical binding moment for PDR v1.0 price determination."@en .
+
+
+# ── FIBO class stubs (declare referenced classes to avoid dangling refs) ──
+fibo-ind-fx-fx:CurrencySpotRate     a owl:Class ; rdfs:label "Currency Spot Rate"@en .
+fibo-ind-fx-fx:CurrencySpotMidRate  a owl:Class ; rdfs:label "Currency Spot Mid Rate"@en .
+fibo-ind-fx-fx:QuotedExchangeRate   a owl:Class ; rdfs:label "Quoted Exchange Rate"@en .
+fibo-fnd-acc-cur:MonetaryPrice      a owl:Class ; rdfs:label "Monetary Price"@en .
+fibo-fnd-acc-cur:CalculatedPrice    a owl:Class ; rdfs:label "Calculated Price"@en .
+fibo-fnd-acc-cur:hasRateValue       a owl:DatatypeProperty ; rdfs:label "has rate value"@en .
+fibo-fnd-dt-fd:CalculationPeriod    a owl:Class ; rdfs:label "Calculation Period"@en .
+fibo-fbc-fct-mkt:Exchange           a owl:Class ; rdfs:label "Exchange"@en .
+fibo-fbc-fct-mkt:CryptoAssetServicesProvider  a owl:Class ; rdfs:label "Crypto Asset Services Provider"@en .
+fibo-fbc-fct-mkt:DataReportingServicesProvider a owl:Class ; rdfs:label "Data Reporting Services Provider"@en .
